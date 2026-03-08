@@ -1,6 +1,0 @@
-# Print to file in Python
-with open('output.txt', 'w') as f:
-    f.write('Hello, World!\n')
-    f.write('This is written to a file.\n')
-
-print("File written successfully!")
