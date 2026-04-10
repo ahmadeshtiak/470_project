@@ -1,5 +1,5 @@
-# Restart Server Script for MotorWala
-Write-Host "=== MotorWala Server Restart ===" -ForegroundColor Cyan
+# Restart Server Script for AutoForge
+Write-Host "=== AutoForge Server Restart ===" -ForegroundColor Cyan
 Write-Host ""
 
 # Check if server is running

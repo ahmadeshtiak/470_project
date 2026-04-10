@@ -27,12 +27,12 @@ export const sendOTPEmail = async (email, otp) => {
     const mailOptions = {
       from: process.env.EMAIL_USER,
       to: email,
-      subject: "Email Verification - MotorWala",
+      subject: "Email Verification - AutoForge",
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 8px;">
           <h2 style="color: #333; text-align: center;">Email Verification</h2>
           <p style="color: #666; font-size: 16px;">Hello,</p>
-          <p style="color: #666; font-size: 16px;">Thank you for signing up with MotorWala. To verify your email address, please use the following OTP:</p>
+          <p style="color: #666; font-size: 16px;">Thank you for signing up with AutoForge. To verify your email address, please use the following OTP:</p>
           
           <div style="background-color: #f0f0f0; padding: 20px; text-align: center; border-radius: 5px; margin: 30px 0;">
             <p style="margin: 0; font-size: 32px; font-weight: bold; color: #007bff; letter-spacing: 5px;">${otp}</p>
@@ -42,7 +42,7 @@ export const sendOTPEmail = async (email, otp) => {
           <p style="color: #666; font-size: 14px;">If you didn't request this verification, please ignore this email.</p>
           
           <hr style="border: none; border-top: 1px solid #ddd; margin: 20px 0;">
-          <p style="color: #999; font-size: 12px; text-align: center;">© 2025 MotorWala. All rights reserved.</p>
+          <p style="color: #999; font-size: 12px; text-align: center;">© 2025 AutoForge. All rights reserved.</p>
         </div>
       `,
     };
@@ -63,10 +63,10 @@ export const sendWelcomeEmail = async (email, name) => {
     const mailOptions = {
       from: process.env.EMAIL_USER,
       to: email,
-      subject: "Welcome to MotorWala!",
+      subject: "Welcome to AutoForge!",
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 8px;">
-          <h2 style="color: #333; text-align: center;">Welcome to MotorWala!</h2>
+          <h2 style="color: #333; text-align: center;">Welcome to AutoForge!</h2>
           <p style="color: #666; font-size: 16px;">Hello ${name},</p>
           <p style="color: #666; font-size: 16px;">Your email has been verified successfully! Your account is now active and ready to use.</p>
           
@@ -78,7 +78,7 @@ export const sendWelcomeEmail = async (email, name) => {
           </ul>
           
           <hr style="border: none; border-top: 1px solid #ddd; margin: 20px 0;">
-          <p style="color: #999; font-size: 12px; text-align: center;">© 2025 MotorWala. All rights reserved.</p>
+          <p style="color: #999; font-size: 12px; text-align: center;">© 2025 AutoForge. All rights reserved.</p>
         </div>
       `,
     };

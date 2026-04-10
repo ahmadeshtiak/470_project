@@ -1,7 +1,7 @@
 {
   "name": "server",
   "version": "1.0.0",
-  "description": "Backend server for MotorWala application",
+  "description": "Backend server for AutoForge application",
   "main": "server.js",
   "scripts": {
     "start": "node ./src/server.js",

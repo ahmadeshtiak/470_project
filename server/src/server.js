@@ -82,7 +82,7 @@ if (process.env.MONGO_URI) {
     .catch((err) => console.error("❌ MongoDB Connection Error:", err));
 } else {
   console.warn("⚠️  MONGO_URI not set. Server will start but database features won't work.");
-  console.warn("⚠️  Please create a .env file in the server directory with: MONGO_URI=mongodb://localhost:27017/motorwala");
+  console.warn("⚠️  Please create a .env file in the server directory with: MONGO_URI=mongodb://localhost:27017/autoforge");
 }
 
 // Socket.io authentication middleware

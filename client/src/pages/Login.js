@@ -39,7 +39,7 @@ export default function Login() {
   return (
     <div className="form-container">
       <h2 className="card-title">Welcome Back</h2>
-      <p className="card-subtitle">Login to your MotorWala account</p>
+<p className="card-subtitle">Login to your AutoForge account</p>
 
       {error && <div className="alert alert-error">{error}</div>}
 

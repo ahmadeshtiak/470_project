@@ -1,5 +1,5 @@
-# Start script for MotorWala application
-Write-Host "Starting MotorWala Application..." -ForegroundColor Green
+# Start script for AutoForge application
+Write-Host "Starting AutoForge Application..." -ForegroundColor Green
 
 # Check if .env file exists in server directory
 if (-not (Test-Path "server\.env")) {
@@ -7,7 +7,7 @@ if (-not (Test-Path "server\.env")) {
     Write-Host "Creating server\.env file with default MongoDB URI..." -ForegroundColor Yellow
     @"
 PORT=5000
-MONGO_URI=mongodb://localhost:27017/motorwala
+MONGO_URI=mongodb://localhost:27017/autoforge
 "@ | Out-File -FilePath "server\.env" -Encoding utf8
     Write-Host "✅ Created server\.env file" -ForegroundColor Green
     Write-Host "⚠️  Make sure MongoDB is running on localhost:27017" -ForegroundColor Yellow
