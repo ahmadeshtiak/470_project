@@ -61,13 +61,13 @@ app.use(morgan("dev"));
 
 // Mount routes
 app.use("/api/auth", authRoutes);
-// app.use("/api/cars", carRoutes);
-// app.use("/api/parts", partRoutes);
-// app.use("/api/orders", orderRoutes);
-// app.use("/api/notifications", notificationRoutes);
-// app.use("/api/transactions", transactionRoutes);
-// app.use("/api/designs", designRoutes);
-// app.use("/api/chat", chatRoutes);
+app.use("/api/cars", carRoutes);
+app.use("/api/parts", partRoutes);
+app.use("/api/orders", orderRoutes);
+app.use("/api/notifications", notificationRoutes);
+app.use("/api/transactions", transactionRoutes);
+app.use("/api/designs", designRoutes);
+app.use("/api/chat", chatRoutes);
 
 // Simple route to test the server
 app.get("/", (req, res) => {

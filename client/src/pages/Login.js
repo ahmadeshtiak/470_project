@@ -76,6 +76,9 @@ export default function Login() {
       <p style={{ marginTop: '1rem', textAlign: 'center', color: 'var(--text-secondary)' }}>
         Don't have an account? <Link to="/signup" style={{ color: 'var(--brand-maroon)', textDecoration: 'none' }}>Sign up</Link>
       </p>
+      <p style={{ marginTop: '0.5rem', textAlign: 'center', color: 'var(--text-secondary)' }}>
+        Forgot your password? <Link to="/forgot-password" style={{ color: 'var(--brand-maroon)', textDecoration: 'none' }}>Reset it here</Link>
+      </p>
     </div>
   );
 }

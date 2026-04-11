@@ -188,8 +188,66 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const requestPasswordReset = async (email) => {
+    setLoading(true);
+    setError(null);
+    try {
+      const response = await fetch('http://localhost:5000/api/auth/request-password-reset', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+      });
+      
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({ message: `Server error: ${response.status}` }));
+        throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
+      }
+      
+      const data = await response.json();
+      if (!data.success) {
+        throw new Error(data.message);
+      }
+      return data;
+    } catch (err) {
+      const errorMessage = err.message || 'Failed to send reset code. Please check if the backend is running.';
+      setError(errorMessage);
+      throw new Error(errorMessage);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const resetPassword = async (email, otp, password, confirmPassword) => {
+    setLoading(true);
+    setError(null);
+    try {
+      const response = await fetch('http://localhost:5000/api/auth/reset-password', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, otp, password, confirmPassword }),
+      });
+      
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({ message: `Server error: ${response.status}` }));
+        throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
+      }
+      
+      const data = await response.json();
+      if (!data.success) {
+        throw new Error(data.message);
+      }
+      return data;
+    } catch (err) {
+      const errorMessage = err.message || 'Failed to reset password';
+      setError(errorMessage);
+      throw new Error(errorMessage);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
-    <AuthContext.Provider value={{ user, token, loading, error, signup, login, logout, updateProfile, verifyOTP, resendOTP }}>
+    <AuthContext.Provider value={{ user, token, loading, error, signup, login, logout, updateProfile, verifyOTP, resendOTP, requestPasswordReset, resetPassword }}>
       {children}
     </AuthContext.Provider>
   );
