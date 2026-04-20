@@ -54,10 +54,15 @@ export default function OrdersTabs() {
 
   const updateOrderStatus = async (id, status) => {
     try {
-      await axiosInstance.patch(`/orders/${id}/status`, { status });
-      fetchReceivedOrders();
+      console.log(`📤 Updating order ${id} status to ${status}`);
+      const response = await axiosInstance.patch(`/orders/${id}/status`, { status });
+      console.log("✅ Order status updated:", response.data);
+      await fetchReceivedOrders();
+      alert(`Order status updated to ${status} successfully!`);
     } catch (err) {
-      alert(err.response?.data?.message || "Failed to update order status");
+      console.error("❌ Error updating order:", err.response || err);
+      const errorMsg = err.response?.data?.message || err.message || "Failed to update order status";
+      alert(`Error: ${errorMsg}`);
     }
   };
 

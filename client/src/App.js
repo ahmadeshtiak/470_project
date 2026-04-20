@@ -18,6 +18,7 @@ import CarDetail from './pages/CarDetail';
 import Customise from './pages/Customise';
 import CustomizationStudio from './pages/CustomizationStudio';
 import LatestListings from './pages/LatestListings';
+import LandingPage from './pages/LandingPage';
 import PartList from './pages/PartList';
 import PartDetail from './pages/PartDetail';
 import AddPart from './pages/AddPart';
@@ -48,6 +49,7 @@ function App() {
             <Routes>
             {/* Standard App Routes with Navbar */}
             <Route element={<MainLayout />}>
+              <Route path="/" element={<LandingPage />} />
               <Route path="/signup" element={<Signup />} />
               <Route path="/login" element={<Login />} />
               <Route path="/forgot-password" element={<ForgotPassword />} />
@@ -79,8 +81,6 @@ function App() {
             {/* Standalone Invoice Routes (No Navbar) */}
             <Route path="/invoice" element={<Invoice />} />
             <Route path="/invoice/:orderId" element={<Invoice />} />
-
-            <Route path="/" element={<Navigate to="/login" replace />} />
           </Routes>
           </ChatProvider>
         </CartProvider>
@@ -90,3 +90,4 @@ function App() {
 }
 
 export default App;
+

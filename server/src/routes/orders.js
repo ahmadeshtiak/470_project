@@ -111,7 +111,7 @@ router.get("/my", auth, async (req, res) => {
   try {
     const orders = await Order.find({ buyer: req.userId })
       .sort({ createdAt: -1 })
-      .populate("items.part", "name images")
+      .populate("items.product", "name images")
       .populate("buyer", "name email");
     res.status(200).json({ success: true, data: orders });
   } catch (error) {
@@ -132,8 +132,8 @@ router.get("/seller", auth, async (req, res) => {
 
     const orders = await Order.find({ "items.seller": req.userId })
       .sort({ createdAt: -1 })
-      .populate("items.part", "name images")
-      .populate("buyer", "name email");
+      .populate("items.product", "name images brand model")
+      .populate("buyer", "name email phone");
 
     res.status(200).json({ success: true, data: orders });
   } catch (error) {
@@ -178,28 +178,70 @@ router.get("/:id", auth, async (req, res) => {
 router.patch("/:id/status", auth, async (req, res) => {
   try {
     const { status } = req.body;
-    if (!["pending", "confirmed", "shipped", "delivered", "cancelled"].includes(status)) {
-      return res.status(400).json({ success: false, message: "Invalid status" });
+    
+    // Validate status
+    const validStatuses = ["pending", "confirmed", "shipped", "delivered", "cancelled"];
+    if (!validStatuses.includes(status)) {
+      return res.status(400).json({ 
+        success: false, 
+        message: `Invalid status. Must be one of: ${validStatuses.join(", ")}` 
+      });
     }
 
+    // Find order
     const order = await Order.findById(req.params.id);
     if (!order) {
       return res.status(404).json({ success: false, message: "Order not found" });
     }
 
-    // Only sellers of items or admin can update
-    const isSeller = order.items.some((item) => item.seller.toString() === req.userId);
-    if (!isSeller && req.role !== "admin") {
+    // Check if user is authorized to update (seller or admin)
+    let isSeller = false;
+    for (const item of order.items) {
+      const itemSellerId = item.seller.toString();
+      const userId = String(req.userId);
+      if (itemSellerId === userId) {
+        isSeller = true;
+        break;
+      }
+    }
+    
+    const isAdmin = req.role === "admin";
+
+    console.log("🔍 Update Order Status Check:", {
+      orderId: req.params.id,
+      userId: String(req.userId),
+      userRole: req.role,
+      itemSellers: order.items.map(item => item.seller.toString()),
+      isSeller,
+      isAdmin,
+      newStatus: status
+    });
+
+    if (!isSeller && !isAdmin) {
+      console.warn("❌ Unauthorized attempt to update order:", {
+        userId: String(req.userId),
+        itemSellers: order.items.map(item => item.seller.toString())
+      });
       return res.status(403).json({ success: false, message: "Not authorized to update this order" });
     }
 
+    // Update status
     order.status = status;
     await order.save();
 
+    console.log("✅ Order status updated successfully:", {
+      orderId: order._id,
+      newStatus: status
+    });
+
     res.status(200).json({ success: true, data: order });
   } catch (error) {
-    console.error("Update order status error:", error);
-    res.status(500).json({ success: false, message: "Error updating order status", error: error.message });
+    console.error("❌ Update order status error:", error);
+    res.status(500).json({ 
+      success: false, 
+      message: "Error updating order status", 
+      error: error.message 
+    });
   }
 });
 
