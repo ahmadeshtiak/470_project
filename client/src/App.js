@@ -3,7 +3,6 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { CartProvider } from './context/CartContext';
 import { ChatProvider } from './context/ChatContext';
-import Navbar from './components/Navbar';
 import MainLayout from './components/MainLayout';
 import Signup from './pages/Signup';
 import Login from './pages/Login';
@@ -18,7 +17,6 @@ import CarDetail from './pages/CarDetail';
 import Customise from './pages/Customise';
 import CustomizationStudio from './pages/CustomizationStudio';
 import LatestListings from './pages/LatestListings';
-import LandingPage from './pages/LandingPage';
 import PartList from './pages/PartList';
 import PartDetail from './pages/PartDetail';
 import AddPart from './pages/AddPart';
@@ -33,7 +31,7 @@ import AdminTransactions from './pages/AdminTransactions';
 import UploadDesign from './pages/UploadDesign';
 import MyDesigns from './pages/MyDesigns';
 import SellerMessages from './pages/SellerMessages';
-import SellerAnalytics from './pages/SellerAnalytics';
+import LandingPage from './pages/LandingPage';
 import './styles/theme.css';
 
 function ProtectedRoute({ children }) {
@@ -75,7 +73,6 @@ function App() {
               <Route path="/messages" element={<ProtectedRoute><SellerMessages /></ProtectedRoute>} />
               <Route path="/transactions" element={<ProtectedRoute><TransactionHistory /></ProtectedRoute>} />
               <Route path="/admin/transactions" element={<ProtectedRoute><AdminTransactions /></ProtectedRoute>} />
-              <Route path="/seller-analytics" element={<ProtectedRoute><SellerAnalytics /></ProtectedRoute>} />
               <Route path="/cart" element={<Cart />} />
               <Route path="/checkout" element={<ProtectedRoute><Checkout /></ProtectedRoute>} />
             </Route>
@@ -92,4 +89,3 @@ function App() {
 }
 
 export default App;
-

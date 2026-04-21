@@ -18,24 +18,29 @@ export default function LandingPage() {
   const fetchData = async () => {
     try {
       setLoading(true);
+      setError(null);
+      
       // Fetch latest cars
       const carsResponse = await axiosInstance.get("/cars/latest");
+      console.log("Cars response:", carsResponse.data);
       setCars(carsResponse.data.data || []);
 
       // Fetch latest parts
       const partsResponse = await axiosInstance.get("/parts/latest");
+      console.log("Parts response:", partsResponse.data);
       setParts(partsResponse.data.data || []);
 
       // Fetch all cars and parts for stats
       const allCarsResponse = await axiosInstance.get("/cars");
       const allPartsResponse = await axiosInstance.get("/parts");
       
+      console.log("All cars count:", allCarsResponse.data.data?.length);
+      console.log("All parts count:", allPartsResponse.data.data?.length);
+      
       setStats({
         totalCars: allCarsResponse.data.data?.length || 0,
         totalParts: allPartsResponse.data.data?.length || 0,
       });
-
-      setError(null);
     } catch (err) {
       console.error("Error fetching data:", err);
       setError(err.response?.data?.message || "Failed to fetch data");
@@ -46,7 +51,7 @@ export default function LandingPage() {
 
   return (
     <div className="min-h-screen w-full bg-gradient-to-b from-[#1f1410] via-[#201311] to-[#2b1a1f]">
-      {/* Hero Section */}
+      {/* Hero Section - Always visible */}
       <div className="relative overflow-hidden px-4 py-16 md:py-24">
         <div className="absolute inset-0 opacity-40 bg-[radial-gradient(circle_at_center,#b87333,transparent_50%)]" />
         <div className="relative max-w-[1600px] mx-auto text-center">
@@ -60,7 +65,7 @@ export default function LandingPage() {
             Discover handpicked vehicles and genuine automotive components from trusted sellers. Whether you're looking for your dream car or the perfect upgrade, we've got you covered.
           </p>
           
-          {/* Stats Section */}
+          {/* Stats Section - Always visible */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 my-12">
             <div className="rounded-xl bg-gradient-to-br from-amber-500/20 to-amber-600/10 border border-amber-500/30 p-6 backdrop-blur-sm">
               <div className="text-3xl md:text-4xl font-bold text-amber-50">{stats.totalCars}</div>
