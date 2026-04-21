@@ -31,6 +31,7 @@ import AdminTransactions from './pages/AdminTransactions';
 import UploadDesign from './pages/UploadDesign';
 import MyDesigns from './pages/MyDesigns';
 import SellerMessages from './pages/SellerMessages';
+import SellerAnalytics from './pages/SellerAnalytics';
 import LandingPage from './pages/LandingPage';
 import './styles/theme.css';
 
@@ -70,6 +71,7 @@ function App() {
               <Route path="/parts/:id" element={<PartDetail />} />
               <Route path="/latest-parts" element={<LatestParts />} />
               <Route path="/orders" element={<ProtectedRoute><MyOrders /></ProtectedRoute>} />
+              <Route path="/seller-analytics" element={<ProtectedRoute><SellerAnalytics /></ProtectedRoute>} />
               <Route path="/messages" element={<ProtectedRoute><SellerMessages /></ProtectedRoute>} />
               <Route path="/transactions" element={<ProtectedRoute><TransactionHistory /></ProtectedRoute>} />
               <Route path="/admin/transactions" element={<ProtectedRoute><AdminTransactions /></ProtectedRoute>} />

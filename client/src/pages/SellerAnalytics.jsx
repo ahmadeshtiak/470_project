@@ -4,19 +4,27 @@ import { useNavigate } from "react-router-dom";
 import axiosInstance from "../utils/axios";
 
 export default function SellerAnalytics() {
-  const { user } = useAuth();
+  const { user, loading: authLoading } = useAuth();
   const navigate = useNavigate();
   const [dashboardData, setDashboardData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
   useEffect(() => {
-    if (!user || user.role !== "seller") {
+    if (authLoading) return; // Wait for auth to load
+    
+    if (!user) {
+      navigate("/login");
+      return;
+    }
+    
+    if (user.role !== "seller") {
       navigate("/dashboard");
       return;
     }
+    
     fetchAnalytics();
-  }, [user, navigate]);
+  }, [user, authLoading, navigate]);
 
   const fetchAnalytics = async () => {
     try {
@@ -32,6 +40,17 @@ export default function SellerAnalytics() {
     }
   };
 
+  if (authLoading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-b from-[#1f1410] via-[#201311] to-[#2b1a1f] py-8 px-4">
+        <div className="max-w-6xl mx-auto text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-amber-500 mx-auto"></div>
+          <p className="mt-4 text-amber-100">Loading profile...</p>
+        </div>
+      </div>
+    );
+  }
+
   if (loading) {
     return (
       <div className="min-h-screen bg-gradient-to-b from-[#1f1410] via-[#201311] to-[#2b1a1f] py-8 px-4">
@@ -43,19 +62,43 @@ export default function SellerAnalytics() {
     );
   }
 
-  if (!dashboardData) {
+  if (error) {
     return (
       <div className="min-h-screen bg-gradient-to-b from-[#1f1410] via-[#201311] to-[#2b1a1f] py-8 px-4">
         <div className="max-w-6xl mx-auto">
           <div className="bg-red-100 border border-red-400 text-red-700 px-6 py-4 rounded-lg">
-            {error || "No analytics data available"}
+            {error}
           </div>
         </div>
       </div>
     );
   }
 
-  const { summary, topByViews, topBySaves, allListings } = dashboardData;
+  if (!dashboardData) {
+    return (
+      <div className="min-h-screen bg-gradient-to-b from-[#1f1410] via-[#201311] to-[#2b1a1f] py-8 px-4">
+        <div className="max-w-6xl mx-auto">
+          <div className="bg-yellow-100 border border-yellow-400 text-yellow-700 px-6 py-4 rounded-lg">
+            No analytics data available
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  const { summary, topByViews, topBySaves, allListings } = dashboardData || {};
+
+  if (!summary) {
+    return (
+      <div className="min-h-screen bg-gradient-to-b from-[#1f1410] via-[#201311] to-[#2b1a1f] py-8 px-4">
+        <div className="max-w-6xl mx-auto">
+          <div className="bg-yellow-100 border border-yellow-400 text-yellow-700 px-6 py-4 rounded-lg">
+            Analytics data is incomplete. Please refresh the page.
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#1f1410] via-[#201311] to-[#2b1a1f] py-8 px-4">
