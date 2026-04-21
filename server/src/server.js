@@ -22,6 +22,7 @@ import notificationRoutes from "./routes/notifications.js";
 import transactionRoutes from "./routes/transactions.js";
 import designRoutes from "./routes/designs.js";
 import chatRoutes from "./routes/chat.js";
+import analyticsRoutes from "./routes/analytics.js";
 import Chat from "./models/Chat.js";
 
 dotenv.config();
@@ -52,7 +53,7 @@ console.log("📁 Serving static files from:", uploadsPath);
 app.use(cors({
   origin: 'http://localhost:3000',
   credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
 app.use(express.json());
@@ -68,6 +69,7 @@ app.use("/api/notifications", notificationRoutes);
 app.use("/api/transactions", transactionRoutes);
 app.use("/api/designs", designRoutes);
 app.use("/api/chat", chatRoutes);
+app.use("/api/analytics", analyticsRoutes);
 
 // Simple route to test the server
 app.get("/", (req, res) => {

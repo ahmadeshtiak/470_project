@@ -20,9 +20,12 @@ export default function PartDetail() {
   const { startChat, activeChat, closeChat } = useChat();
   const [showChat, setShowChat] = useState(false);
   const [chatLoading, setChatLoading] = useState(false);
+  const [isSaved, setIsSaved] = useState(false);
 
   useEffect(() => {
     fetchPart();
+    recordView();
+    checkIfSaved();
   }, [id]);
 
   const fetchPart = async () => {
@@ -35,6 +38,44 @@ export default function PartDetail() {
       setError(err.response?.data?.message || "Failed to fetch part details");
     } finally {
       setLoading(false);
+    }
+  };
+
+  const recordView = async () => {
+    try {
+      await axiosInstance.post("/analytics/view", {
+        listingType: "Part",
+        listingId: id
+      });
+    } catch (err) {
+      console.error("Error recording view:", err);
+    }
+  };
+
+  const checkIfSaved = async () => {
+    try {
+      const response = await axiosInstance.get("/analytics/check-save", {
+        params: {
+          listingType: "Part",
+          listingId: id
+        }
+      });
+      setIsSaved(response.data.isSaved);
+    } catch (err) {
+      console.error("Error checking save:", err);
+    }
+  };
+
+  const handleSaveListing = async () => {
+    try {
+      await axiosInstance.post("/analytics/save", {
+        listingType: "Part",
+        listingId: id
+      });
+      setIsSaved(!isSaved);
+    } catch (err) {
+      alert(err.response?.data?.message || "Error saving listing");
+      console.error("Error saving listing:", err);
     }
   };
 
@@ -304,6 +345,20 @@ export default function PartDetail() {
                             Contact Seller
                           </>
                         )}
+                      </button>
+                    )}
+
+                    {/* Save Button */}
+                    {user && (
+                      <button
+                        onClick={handleSaveListing}
+                        className={`flex-1 font-semibold py-3 px-6 rounded-lg transition duration-200 flex items-center justify-center gap-2 min-w-[180px] ${
+                          isSaved
+                            ? "bg-red-600 hover:bg-red-700 text-white"
+                            : "bg-gray-600 hover:bg-gray-700 text-white"
+                        }`}
+                      >
+                        {isSaved ? "❤️ Saved" : "🤍 Save"}
                       </button>
                     )}
 

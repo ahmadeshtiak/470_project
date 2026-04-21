@@ -97,6 +97,11 @@ export default function Navbar() {
                 </li>
               </>
             )}
+            {user?.role === 'seller' && (
+              <li>
+                <Link to="/seller-analytics">📊 Analytics</Link>
+              </li>
+            )}
             <li>
               <span style={{ color: 'var(--text-secondary)' }}>Hi, {user?.name}</span>
             </li>

@@ -24,9 +24,12 @@ export default function CarDetail() {
     rims: "",
     accessories: [],
   });
+  const [isSaved, setIsSaved] = useState(false);
 
   useEffect(() => {
     fetchCar();
+    recordView();
+    checkIfSaved();
   }, [id]);
 
   const fetchCar = async () => {
@@ -47,6 +50,44 @@ export default function CarDetail() {
       console.error("Error fetching car:", err);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const recordView = async () => {
+    try {
+      await axiosInstance.post("/analytics/view", {
+        listingType: "Car",
+        listingId: id
+      });
+    } catch (err) {
+      console.error("Error recording view:", err);
+    }
+  };
+
+  const checkIfSaved = async () => {
+    try {
+      const response = await axiosInstance.get("/analytics/check-save", {
+        params: {
+          listingType: "Car",
+          listingId: id
+        }
+      });
+      setIsSaved(response.data.isSaved);
+    } catch (err) {
+      console.error("Error checking save:", err);
+    }
+  };
+
+  const handleSaveListing = async () => {
+    try {
+      await axiosInstance.post("/analytics/save", {
+        listingType: "Car",
+        listingId: id
+      });
+      setIsSaved(!isSaved);
+    } catch (err) {
+      alert(err.response?.data?.message || "Error saving listing");
+      console.error("Error saving listing:", err);
     }
   };
 
@@ -378,6 +419,20 @@ export default function CarDetail() {
                         Contact Seller
                       </>
                     )}
+                  </button>
+                )}
+
+                {/* Save Button - for all users */}
+                {user && (
+                  <button
+                    onClick={handleSaveListing}
+                    className={`flex-1 font-semibold py-3 px-6 rounded-lg transition duration-200 flex items-center justify-center gap-2 ${
+                      isSaved
+                        ? "bg-red-600 hover:bg-red-700 text-white"
+                        : "bg-gray-600 hover:bg-gray-700 text-white"
+                    }`}
+                  >
+                    {isSaved ? "❤️ Saved" : "🤍 Save"}
                   </button>
                 )}
               </div>
