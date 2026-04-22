@@ -60,6 +60,12 @@ export default function AddPart() {
     setLoading(true);
     setError(null);
 
+    if (!localStorage.getItem("token")) {
+      setError("Please login to create a part listing.");
+      setLoading(false);
+      return;
+    }
+
     if (images.length === 0) {
       setError("At least one image is required");
       setLoading(false);
@@ -73,9 +79,7 @@ export default function AddPart() {
       });
       images.forEach((image) => formDataToSend.append("images", image));
 
-      const response = await axiosInstance.post("/parts", formDataToSend, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
+      const response = await axiosInstance.post("/parts", formDataToSend);
 
       const partId = response.data.data._id;
       if (response.data.roleUpdated) {
@@ -83,7 +87,9 @@ export default function AddPart() {
       }
       navigate(`/parts/${partId}`);
     } catch (err) {
-      setError(err.response?.data?.message || "Failed to create part listing");
+      console.error("Error creating part:", err.response || err);
+      const errorMessage = err.response?.data?.message || err.response?.statusText || err.message || "Failed to create part listing";
+      setError(errorMessage);
     } finally {
       setLoading(false);
     }

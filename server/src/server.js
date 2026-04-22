@@ -23,6 +23,7 @@ import transactionRoutes from "./routes/transactions.js";
 import designRoutes from "./routes/designs.js";
 import chatRoutes from "./routes/chat.js";
 import analyticsRoutes from "./routes/analytics.js";
+import swapRequestRoutes from "./routes/swapRequests.js";
 import Chat from "./models/Chat.js";
 
 dotenv.config();
@@ -70,6 +71,7 @@ app.use("/api/transactions", transactionRoutes);
 app.use("/api/designs", designRoutes);
 app.use("/api/chat", chatRoutes);
 app.use("/api/analytics", analyticsRoutes);
+app.use("/api/swap-requests", swapRequestRoutes);
 
 // Simple route to test the server
 app.get("/", (req, res) => {

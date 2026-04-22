@@ -108,9 +108,7 @@ export default function EditPart() {
         newImages.forEach((img) => formDataToSend.append("images", img));
       }
 
-      await axiosInstance.put(`/parts/${id}`, formDataToSend, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
+      await axiosInstance.put(`/parts/${id}`, formDataToSend);
 
       navigate("/parts");
     } catch (err) {

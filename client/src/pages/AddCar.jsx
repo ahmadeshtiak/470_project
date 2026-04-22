@@ -9,7 +9,6 @@ export default function AddCar() {
     brand: "",
     year: new Date().getFullYear(),
     price: "",
-    price: "",
     condition: "used",
     colors: "",
     rims: "",
@@ -65,6 +64,12 @@ export default function AddCar() {
     setLoading(true);
     setError(null);
 
+    if (!localStorage.getItem("token")) {
+      setError("Please login to create a car listing.");
+      setLoading(false);
+      return;
+    }
+
     if (images.length === 0) {
       setError("At least one image is required");
       setLoading(false);
@@ -75,8 +80,8 @@ export default function AddCar() {
       const formDataToSend = new FormData();
       formDataToSend.append("model", formData.model);
       formDataToSend.append("brand", formData.brand);
-      formDataToSend.append("year", formData.year);
-      formDataToSend.append("price", formData.price);
+      formDataToSend.append("year", String(formData.year));
+      formDataToSend.append("price", String(formData.price));
       formDataToSend.append("condition", formData.condition);
 
       // Convert comma-separated strings to arrays
@@ -92,19 +97,12 @@ export default function AddCar() {
         formDataToSend.append("images", image);
       });
 
-      const response = await axiosInstance.post("/cars", formDataToSend, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
+      const response = await axiosInstance.post("/cars", formDataToSend);
 
       // Redirect to the detail page of the newly created car
       const carId = response.data.data._id;
 
-      // If role was updated, we still need to refresh user data
-      // But we'll do it after navigation to avoid losing the new car context
       if (response.data.roleUpdated) {
-        // Refresh user data in the background
         setTimeout(() => {
           window.location.reload();
         }, 100);
@@ -112,8 +110,9 @@ export default function AddCar() {
 
       navigate(`/cars/${carId}`);
     } catch (err) {
-      setError(err.response?.data?.message || "Failed to create car listing");
-      console.error("Error creating car:", err);
+      console.error("Error creating car:", err.response || err);
+      const errorMessage = err.response?.data?.message || err.response?.statusText || err.message || "Failed to create car listing";
+      setError(errorMessage);
     } finally {
       setLoading(false);
     }

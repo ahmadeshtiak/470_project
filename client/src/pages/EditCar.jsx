@@ -131,11 +131,7 @@ export default function EditCar() {
         });
       }
 
-      await axiosInstance.put(`/cars/${id}`, formDataToSend, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
+      await axiosInstance.put(`/cars/${id}`, formDataToSend);
       navigate("/cars");
     } catch (err) {
       setError(err.response?.data?.message || "Failed to update car listing");

@@ -56,6 +56,9 @@ export default function Navbar() {
               <Link to="/messages">💬 Messages</Link>
             </li>
             <li>
+              <Link to="/exchange">🔄 Exchanges</Link>
+            </li>
+            <li>
               <Link to="/transactions">💳 Transactions</Link>
             </li>
             <li>

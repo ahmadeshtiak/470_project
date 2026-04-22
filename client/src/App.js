@@ -30,9 +30,12 @@ import TransactionHistory from './pages/TransactionHistory';
 import AdminTransactions from './pages/AdminTransactions';
 import UploadDesign from './pages/UploadDesign';
 import MyDesigns from './pages/MyDesigns';
-import SellerMessages from './pages/SellerMessages';
+import SellerOrders from './pages/SellerOrders';
 import SellerAnalytics from './pages/SellerAnalytics';
+import SellerMessages from './pages/SellerMessages';
 import LandingPage from './pages/LandingPage';
+import ExchangeRequestPortal from './pages/ExchangeRequestPortal';
+import SwapRequestsManager from './pages/SwapRequestsManager';
 import './styles/theme.css';
 
 function ProtectedRoute({ children }) {
@@ -47,42 +50,45 @@ function App() {
         <CartProvider>
           <ChatProvider>
             <Routes>
-            {/* Standard App Routes with Navbar */}
-            <Route element={<MainLayout />}>
-              <Route path="/" element={<LandingPage />} />
-              <Route path="/signup" element={<Signup />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/forgot-password" element={<ForgotPassword />} />
-              <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
-              <Route path="/edit-profile" element={<ProtectedRoute><EditProfile /></ProtectedRoute>} />
-              <Route path="/admin/users" element={<ProtectedRoute><AdminUsers /></ProtectedRoute>} />
-              <Route path="/cars" element={<CarList />} />
-              <Route path="/cars/add" element={<ProtectedRoute><AddCar /></ProtectedRoute>} />
-              <Route path="/cars/edit/:id" element={<ProtectedRoute><EditCar /></ProtectedRoute>} />
-              <Route path="/cars/:id" element={<CarDetail />} />
-              <Route path="/customise/:id" element={<Customise />} />
-              <Route path="/customization" element={<CustomizationStudio />} />
-              <Route path="/upload-design" element={<UploadDesign />} />
-              <Route path="/my-designs" element={<ProtectedRoute><MyDesigns /></ProtectedRoute>} />
-              <Route path="/latest-listings" element={<LatestListings />} />
-              <Route path="/parts" element={<PartList />} />
-              <Route path="/parts/add" element={<ProtectedRoute><AddPart /></ProtectedRoute>} />
-              <Route path="/parts/edit/:id" element={<ProtectedRoute><EditPart /></ProtectedRoute>} />
-              <Route path="/parts/:id" element={<PartDetail />} />
-              <Route path="/latest-parts" element={<LatestParts />} />
-              <Route path="/orders" element={<ProtectedRoute><MyOrders /></ProtectedRoute>} />
-              <Route path="/seller-analytics" element={<ProtectedRoute><SellerAnalytics /></ProtectedRoute>} />
-              <Route path="/messages" element={<ProtectedRoute><SellerMessages /></ProtectedRoute>} />
-              <Route path="/transactions" element={<ProtectedRoute><TransactionHistory /></ProtectedRoute>} />
-              <Route path="/admin/transactions" element={<ProtectedRoute><AdminTransactions /></ProtectedRoute>} />
-              <Route path="/cart" element={<Cart />} />
-              <Route path="/checkout" element={<ProtectedRoute><Checkout /></ProtectedRoute>} />
-            </Route>
+              {/* Standard App Routes with Navbar */}
+              <Route element={<MainLayout />}>
+                <Route path="/" element={<LandingPage />} />
+                <Route path="/signup" element={<Signup />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/forgot-password" element={<ForgotPassword />} />
+                <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+                <Route path="/edit-profile" element={<ProtectedRoute><EditProfile /></ProtectedRoute>} />
+                <Route path="/admin/users" element={<ProtectedRoute><AdminUsers /></ProtectedRoute>} />
+                <Route path="/cars" element={<CarList />} />
+                <Route path="/cars/add" element={<ProtectedRoute><AddCar /></ProtectedRoute>} />
+                <Route path="/cars/edit/:id" element={<ProtectedRoute><EditCar /></ProtectedRoute>} />
+                <Route path="/cars/:id" element={<CarDetail />} />
+                <Route path="/customise/:id" element={<Customise />} />
+                <Route path="/customization" element={<CustomizationStudio />} />
+                <Route path="/upload-design" element={<UploadDesign />} />
+                <Route path="/my-designs" element={<ProtectedRoute><MyDesigns /></ProtectedRoute>} />
+                <Route path="/latest-listings" element={<LatestListings />} />
+                <Route path="/parts" element={<PartList />} />
+                <Route path="/parts/add" element={<ProtectedRoute><AddPart /></ProtectedRoute>} />
+                <Route path="/parts/edit/:id" element={<ProtectedRoute><EditPart /></ProtectedRoute>} />
+                <Route path="/parts/:id" element={<PartDetail />} />
+                <Route path="/latest-parts" element={<LatestParts />} />
+                <Route path="/orders" element={<ProtectedRoute><MyOrders /></ProtectedRoute>} />
+                <Route path="/seller-analytics" element={<ProtectedRoute><SellerAnalytics /></ProtectedRoute>} />
+                <Route path="/seller-orders" element={<ProtectedRoute><SellerOrders /></ProtectedRoute>} />
+                <Route path="/messages" element={<ProtectedRoute><SellerMessages /></ProtectedRoute>} />
+                <Route path="/transactions" element={<ProtectedRoute><TransactionHistory /></ProtectedRoute>} />
+                <Route path="/admin/transactions" element={<ProtectedRoute><AdminTransactions /></ProtectedRoute>} />
+                <Route path="/exchange" element={<ProtectedRoute><SwapRequestsManager /></ProtectedRoute>} />
+                <Route path="/exchange/:itemId/:itemType" element={<ProtectedRoute><ExchangeRequestPortal /></ProtectedRoute>} />
+                <Route path="/cart" element={<Cart />} />
+                <Route path="/checkout" element={<ProtectedRoute><Checkout /></ProtectedRoute>} />
+              </Route>
 
-            {/* Standalone Invoice Routes (No Navbar) */}
-            <Route path="/invoice" element={<Invoice />} />
-            <Route path="/invoice/:orderId" element={<Invoice />} />
-          </Routes>
+              {/* Standalone Invoice Routes (No Navbar) */}
+              <Route path="/invoice" element={<Invoice />} />
+              <Route path="/invoice/:orderId" element={<Invoice />} />
+            </Routes>
           </ChatProvider>
         </CartProvider>
       </AuthProvider>

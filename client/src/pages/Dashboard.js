@@ -23,13 +23,19 @@ export default function Dashboard() {
       <div className="dashboard-header">
         <h2 className="dashboard-title">Your personal Information</h2>
         <div className="flex gap-3">
-          <button 
+          <button
             className="btn btn-secondary"
             onClick={() => navigate('/my-designs')}
           >
             My Design
           </button>
-          <button 
+          <button
+            className="btn btn-secondary"
+            onClick={() => navigate('/exchange')}
+          >
+            My Exchanges
+          </button>
+          <button
             className="btn btn-secondary"
             onClick={() => navigate('/latest-listings')}
           >
@@ -48,7 +54,7 @@ export default function Dashboard() {
             </div>
             <h3 className="user-name">{user?.name || 'User'}</h3>
           </div>
-          <button 
+          <button
             className="btn btn-secondary edit-profile-btn"
             onClick={() => navigate('/edit-profile')}
           >

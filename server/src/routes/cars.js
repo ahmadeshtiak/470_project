@@ -6,6 +6,16 @@ import { uploadCarImages } from "../middleware/upload.js";
 
 const router = express.Router();
 
+const parseJsonArrayField = (fieldValue) => {
+  if (!fieldValue) return [];
+  try {
+    const parsed = JSON.parse(fieldValue);
+    return Array.isArray(parsed) ? parsed : [];
+  } catch (err) {
+    throw new Error("Customization options must be valid JSON arrays");
+  }
+};
+
 /**
  * GET /api/cars
  * Get all cars - accessible to everyone
@@ -173,9 +183,9 @@ router.post("/", auth, uploadCarImages, async (req, res) => {
       images,
       seller: req.userId,
       customizationOptions: {
-        colors: req.body.colors ? JSON.parse(req.body.colors) : [],
-        rims: req.body.rims ? JSON.parse(req.body.rims) : [],
-        accessories: req.body.accessories ? JSON.parse(req.body.accessories) : [],
+        colors: parseJsonArrayField(req.body.colors),
+        rims: parseJsonArrayField(req.body.rims),
+        accessories: parseJsonArrayField(req.body.accessories),
       }
     });
 
@@ -194,9 +204,10 @@ router.post("/", auth, uploadCarImages, async (req, res) => {
     });
   } catch (error) {
     console.error("Create car error:", error);
-    res.status(500).json({
+    const statusCode = error.message.includes("Customization options must be valid JSON arrays") ? 400 : 500;
+    res.status(statusCode).json({
       success: false,
-      message: "Error creating car listing",
+      message: statusCode === 400 ? error.message : "Error creating car listing",
       error: error.message,
     });
   }
@@ -246,9 +257,9 @@ router.put("/:id", auth, uploadCarImages, async (req, res) => {
     }
 
     // Update customization options if provided
-    if (req.body.colors) car.customizationOptions.colors = JSON.parse(req.body.colors);
-    if (req.body.rims) car.customizationOptions.rims = JSON.parse(req.body.rims);
-    if (req.body.accessories) car.customizationOptions.accessories = JSON.parse(req.body.accessories);
+    if (req.body.colors) car.customizationOptions.colors = parseJsonArrayField(req.body.colors);
+    if (req.body.rims) car.customizationOptions.rims = parseJsonArrayField(req.body.rims);
+    if (req.body.accessories) car.customizationOptions.accessories = parseJsonArrayField(req.body.accessories);
 
     // Handle image updates if files are uploaded
     if (req.files && req.files.length > 0) {
