@@ -93,6 +93,15 @@ export default function Invoice() {
         ? `QT-${Date.now().toString().slice(-8)}`
         : `INV-${orderId?.slice(-8) || Date.now().toString().slice(-8)}`;
 
+    // VAT Calculation for Bangladesh (15% standard rate)
+    const calculateVAT = (subtotal) => {
+        const VAT_RATE = 0.15; // 15% VAT in Bangladesh
+        return Math.round(subtotal * VAT_RATE);
+    };
+
+    const vatAmount = calculateVAT(total);
+    const grandTotal = total + vatAmount;
+
     const handlePrint = () => {
         window.print();
     };
@@ -119,7 +128,7 @@ export default function Invoice() {
                 {/* Invoice Document */}
                 <div
                     ref={invoiceRef}
-                    className="bg-white text-gray-900 rounded-2xl p-8 shadow-xl print:shadow-none print:rounded-none"
+                    className="invoice-document bg-white text-gray-900 rounded-2xl p-8 shadow-xl print:shadow-none print:rounded-none"
                     style={{ fontFamily: 'Arial, sans-serif' }}
                 >
                     {/* Header */}
@@ -259,12 +268,12 @@ export default function Invoice() {
                                 <span className="font-semibold">৳{total?.toLocaleString()}</span>
                             </div>
                             <div className="flex justify-between py-2 border-b">
-                                <span className="text-gray-600">VAT (0%):</span>
-                                <span className="font-semibold">৳0</span>
+                                <span className="text-gray-600">VAT (15%):</span>
+                                <span className="font-semibold">৳{vatAmount.toLocaleString()}</span>
                             </div>
                             <div className="flex justify-between py-3 text-lg">
                                 <span className="font-bold text-gray-900">Grand Total:</span>
-                                <span className="font-bold text-emerald-600">৳{total?.toLocaleString()}</span>
+                                <span className="font-bold text-emerald-600">৳{grandTotal?.toLocaleString()}</span>
                             </div>
                         </div>
                     </div>
@@ -290,17 +299,39 @@ export default function Invoice() {
             {/* Print Styles */}
             <style>{`
                 @media print {
-                    body * {
-                        visibility: hidden;
+                    * {
+                        margin: 0;
+                        padding: 0;
+                        box-sizing: border-box;
                     }
+                    
+                    body {
+                        background: white;
+                    }
+                    
                     .print\\:hidden {
                         display: none !important;
                     }
-                    [ref="invoiceRef"], [ref="invoiceRef"] * {
-                        visibility: visible;
+                    
+                    .invoice-document {
+                        box-shadow: none !important;
+                        border-radius: 0 !important;
+                        page-break-after: auto;
                     }
+                    
+                    .invoice-document * {
+                        box-shadow: none !important;
+                        page-break-inside: avoid;
+                    }
+                    
                     .max-w-3xl {
-                        max-width: 100%;
+                        max-width: 100% !important;
+                    }
+                    
+                    @page {
+                        size: A4;
+                        margin: 0;
+                        padding: 0;
                     }
                 }
             `}</style>
