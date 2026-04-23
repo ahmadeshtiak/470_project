@@ -246,8 +246,36 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const refreshUser = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        return;
+      }
+
+      const response = await fetch('http://localhost:5000/api/auth/profile', {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+
+      if (!response.ok) {
+        console.error('Failed to refresh user profile');
+        return;
+      }
+
+      const data = await response.json();
+      if (data.success && data.user) {
+        setUser(data.user);
+      }
+    } catch (err) {
+      console.error('Error refreshing user profile:', err);
+    }
+  };
+
   return (
-    <AuthContext.Provider value={{ user, token, loading, error, signup, login, logout, updateProfile, verifyOTP, resendOTP, requestPasswordReset, resetPassword }}>
+    <AuthContext.Provider value={{ user, token, loading, error, signup, login, logout, updateProfile, verifyOTP, resendOTP, requestPasswordReset, resetPassword, refreshUser }}>
       {children}
     </AuthContext.Provider>
   );

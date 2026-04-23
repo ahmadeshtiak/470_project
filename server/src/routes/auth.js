@@ -254,6 +254,8 @@ router.get("/profile", async (req, res) => {
         address: user.address,
         about: user.about,
         role: user.role,
+        averageRating: user.averageRating || 0,
+        totalRatings: user.totalRatings || 0,
       },
     });
   } catch (error) {

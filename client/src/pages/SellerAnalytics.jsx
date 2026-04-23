@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../utils/axios";
+import UserRatingsDropdown from "../components/UserRatingsDropdown";
 
 export default function SellerAnalytics() {
   const { user, loading: authLoading } = useAuth();
@@ -107,6 +108,30 @@ export default function SellerAnalytics() {
         <div className="mb-8">
           <h1 className="text-4xl font-bold text-amber-50 mb-2">📊 Seller Analytics</h1>
           <p className="text-amber-100/70">Track views and saves on your listings</p>
+        </div>
+
+        {/* Trust Score Card */}
+        <div className="mb-8 rounded-xl border border-yellow-500/30 bg-gradient-to-br from-yellow-500/20 to-orange-500/10 p-6">
+          <div className="flex items-center justify-between">
+            <div>
+              <h2 className="text-2xl font-bold text-yellow-50 mb-2">🏆 Community Trust Score</h2>
+              <p className="text-yellow-100/70">Your buyer feedback and reputation</p>
+            </div>
+            <div className="flex items-center gap-6">
+              <div className="text-right">
+                <div className="text-5xl font-bold text-yellow-400 flex items-center gap-2">
+                  <span>⭐</span>
+                  {user?.averageRating || 0}
+                </div>
+                <p className="text-sm text-yellow-100/70 mt-1">out of 5.0</p>
+              </div>
+              <div className="text-right">
+                <div className="text-3xl font-bold text-yellow-300">{user?.totalRatings || 0}</div>
+                <p className="text-sm text-yellow-100/70 mt-1">total ratings</p>
+              </div>
+              <UserRatingsDropdown userId={user?.id} userName={user?.name} />
+            </div>
+          </div>
         </div>
 
         {/* Summary Stats */}

@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import axiosInstance from "../utils/axios";
 import "./parts.css";
 import { useAuth } from "../context/AuthContext";
+import RatingModal from "../components/RatingModal";
 
 export default function OrdersTabs() {
   const { user } = useAuth();
@@ -14,6 +15,7 @@ export default function OrdersTabs() {
   const [sellerOrders, setSellerOrders] = useState([]);
   const [loadingSeller, setLoadingSeller] = useState(false);
   const [errorSeller, setErrorSeller] = useState(null);
+  const [ratingModal, setRatingModal] = useState({ isOpen: false, orderId: null, sellerId: null, sellerName: null });
 
   useEffect(() => {
     fetchOrders();
@@ -66,18 +68,17 @@ export default function OrdersTabs() {
     }
   };
 
-  if (loading) {
-    return (
-      <div className="parts-page py-8">
-        <div className="max-w-5xl mx-auto px-4">
-          <div className="parts-card p-8 text-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
-            <p className="mt-4 text-gray-600">Loading orders...</p>
-          </div>
-        </div>
-      </div>
-    );
-  }
+  const openRatingModal = (orderId, sellerId, sellerName) => {
+    setRatingModal({ isOpen: true, orderId, sellerId, sellerName });
+  };
+
+  const closeRatingModal = () => {
+    setRatingModal({ isOpen: false, orderId: null, sellerId: null, sellerName: null });
+  };
+
+  const handleRatingSuccess = () => {
+    fetchOrders();
+  };
 
   return (
     <div className="parts-page py-8">
@@ -151,12 +152,34 @@ export default function OrdersTabs() {
                             <span className="text-gray-700 font-semibold mr-2">Total</span>
                             <span className="text-blue-600 font-bold text-lg">৳{order.total.toLocaleString()}</span>
                           </div>
-                          <button
-                            onClick={() => navigate(`/invoice/${order._id}`)}
-                            className="text-blue-600 hover:text-blue-800 text-sm font-semibold flex items-center gap-1 hover:underline"
-                          >
-                            📄 View Invoice
-                          </button>
+                          <div className="flex gap-2">
+                            <button
+                              onClick={() => navigate(`/invoice/${order._id}`)}
+                              className="text-blue-600 hover:text-blue-800 text-sm font-semibold flex items-center gap-1 hover:underline"
+                            >
+                              📄 View Invoice
+                            </button>
+                            {["shipped", "delivered"].includes(order.status) && !order.isRatedByBuyer && (
+                              <button
+                                onClick={() => {
+                                  const seller = order.items[0]?.seller;
+                                  openRatingModal(
+                                    order._id,
+                                    typeof seller === 'string' ? seller : seller?._id,
+                                    order.items[0]?.sellerName || "Seller"
+                                  );
+                                }}
+                                className="text-amber-600 hover:text-amber-800 text-sm font-semibold flex items-center gap-1 hover:underline"
+                              >
+                                ⭐ Rate Seller
+                              </button>
+                            )}
+                            {order.isRatedByBuyer && (
+                              <span className="text-sm text-green-600 font-semibold flex items-center gap-1">
+                                ✓ Rated
+                              </span>
+                            )}
+                          </div>
                         </div>
                       </div>
                     ))}
@@ -242,6 +265,16 @@ export default function OrdersTabs() {
           )}
         </div>
       </div>
+
+      {ratingModal.isOpen && (
+        <RatingModal
+          orderId={ratingModal.orderId}
+          sellerId={ratingModal.sellerId}
+          sellerName={ratingModal.sellerName}
+          onClose={closeRatingModal}
+          onSuccess={handleRatingSuccess}
+        />
+      )}
     </div>
   );
 }

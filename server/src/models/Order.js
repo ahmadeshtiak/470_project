@@ -51,6 +51,10 @@ const orderSchema = new mongoose.Schema(
       enum: ["pending", "confirmed", "shipped", "delivered", "cancelled"],
       default: "pending",
     },
+    isRatedByBuyer: {
+      type: Boolean,
+      default: false,
+    },
   },
   { timestamps: true }
 );

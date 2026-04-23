@@ -6,6 +6,7 @@ import { useChat } from "../context/ChatContext";
 import axiosInstance from "../utils/axios";
 import ImageCarousel from "../components/ImageCarousel";
 import ChatBox from "../components/ChatBox";
+import UserRatingsDropdown from "../components/UserRatingsDropdown";
 
 export default function CarDetail() {
   const { id } = useParams();
@@ -355,13 +356,18 @@ export default function CarDetail() {
                 {/* Seller Information */}
                 {car.seller && (
                   <div className="p-4 bg-blue-50 rounded-lg">
-                    <p className="text-sm text-gray-500 mb-1">Seller Information</p>
-                    <p className="text-lg font-semibold text-gray-900">
-                      {car.seller.name || car.seller.email}
-                    </p>
-                    {car.seller.email && car.seller.name && (
-                      <p className="text-sm text-gray-600 mt-1">{car.seller.email}</p>
-                    )}
+                    <p className="text-sm text-gray-500 mb-2">Seller Information</p>
+                    <div className="flex items-center justify-between mb-3">
+                      <div>
+                        <p className="text-lg font-semibold text-gray-900">
+                          {car.seller.name || car.seller.email}
+                        </p>
+                        {car.seller.email && car.seller.name && (
+                          <p className="text-sm text-gray-600 mt-1">{car.seller.email}</p>
+                        )}
+                      </div>
+                      <UserRatingsDropdown userId={car.seller._id} userName={car.seller.name || "Seller"} />
+                    </div>
                   </div>
                 )}
 

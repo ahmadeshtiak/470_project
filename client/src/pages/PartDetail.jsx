@@ -6,6 +6,7 @@ import { useChat } from "../context/ChatContext";
 import axiosInstance from "../utils/axios";
 import ImageCarousel from "../components/ImageCarousel";
 import ChatBox from "../components/ChatBox";
+import UserRatingsDropdown from "../components/UserRatingsDropdown";
 import "./parts.css";
 
 export default function PartDetail() {
@@ -270,11 +271,16 @@ export default function PartDetail() {
 
                 {part.seller && (
                   <div className="p-4 bg-blue-50 rounded-lg">
-                    <p className="text-sm text-gray-500 mb-1">Seller Information</p>
-                    <p className="text-lg font-semibold text-gray-900">{part.seller.name || part.seller.email}</p>
-                    {part.seller.email && part.seller.name && (
-                      <p className="text-sm text-gray-600 mt-1">{part.seller.email}</p>
-                    )}
+                    <p className="text-sm text-gray-500 mb-2">Seller Information</p>
+                    <div className="flex items-center justify-between mb-3">
+                      <div>
+                        <p className="text-lg font-semibold text-gray-900">{part.seller.name || part.seller.email}</p>
+                        {part.seller.email && part.seller.name && (
+                          <p className="text-sm text-gray-600 mt-1">{part.seller.email}</p>
+                        )}
+                      </div>
+                      <UserRatingsDropdown userId={part.seller._id} userName={part.seller.name || "Seller"} />
+                    </div>
                   </div>
                 )}
 
