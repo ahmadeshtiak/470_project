@@ -1,0 +1,46 @@
+.parts-page {
+  min-height: 100vh;
+  background: var(--page-bg, #f7f7f9);
+  color: #111;
+}
+
+.parts-card {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+}
+
+.parts-card h1,
+.parts-card h2,
+.parts-card h3,
+.parts-card label,
+.parts-card p,
+.parts-card input,
+.parts-card textarea,
+.parts-card select {
+  color: #111;
+}
+
+/* Darkened controls for contrast with white text */
+.parts-card input,
+.parts-card textarea,
+.parts-card select {
+  background: #1f2937;
+  color: #fff;
+  border: 1px solid #374151;
+}
+
+.parts-card input::placeholder,
+.parts-card textarea::placeholder {
+  color: #9ca3af;
+}
+
+.parts-card input:focus,
+.parts-card textarea:focus,
+.parts-card select:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.25);
+}
+
