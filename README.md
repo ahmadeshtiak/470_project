@@ -1,4 +1,4 @@
-# AutoForge – 360° Car Customization & Exchange Hub
+# AutoForge – Car Customization & Exchange Hub
 
 AutoForge – 360° Car Customization & Exchange Hub is a web-based platform that allows users to buy, sell, customize, and exchange cars and car parts in one integrated system. The platform enables users to browse car listings, customize vehicle features like color and accessories, and view real-time visual changes. It also supports secure purchasing, payment processing, and transaction management. Users can save and share customized designs, negotiate deals through live chat, and manage their profiles easily. The main goal is to provide a complete digital solution for car customization, trading, and exchange with an interactive user experience.
 
